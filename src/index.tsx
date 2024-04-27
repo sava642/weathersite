@@ -14,7 +14,7 @@ if (rootElement) {
   root.render(
     <StrictMode>
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename="/weathersite/">
           <App />
         </BrowserRouter>
       </Provider>
