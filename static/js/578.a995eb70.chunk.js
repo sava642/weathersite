@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkweathersite=self.webpackChunkweathersite||[]).push([[578],{578:(e,s,t)=>{t.r(s),t.d(s,{default:()=>a});t(43);var i=t(579);const a=()=>(0,i.jsx)("div",{children:(0,i.jsx)("p",{style:{marginLeft:"20px"},children:"This is a pet project shows weather information. Interactive map allowing users to select cities."})})}}]);
+//# sourceMappingURL=578.a995eb70.chunk.js.map
