@@ -23,7 +23,7 @@ const SquareContainer = styled.div`
 	height: 100%;
 `;
 const SquarWrapper = styled.div`
-	position: absolute;
+	position: fixed;
 	left: 20px;
 	bottom: 140px;
 	z-index: 99999;
@@ -39,44 +39,12 @@ const ListItem = styled.div`
 
 const ResentResults = () => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const selectedCities = useSelector((state: RootState) => state.cities.selectedCities);
 
-	useEffect(() => {
-		// При изменении списка selectedCities добавляем новые города в историю поиска
-		selectedCities.forEach((city: City) => {
-			addCityToHistory(city);
-		});
-
-		// Добавляем обработчик события popstate для отслеживания изменений в истории браузера
-		window.addEventListener('popstate', handlePopstate);
-
-		// Убираем обработчик события popstate при размонтировании компонента
-		return () => {
-			window.removeEventListener('popstate', handlePopstate);
-		};
-	}, [selectedCities]);
-
-	const addCityToHistory = (city: City) => {
-		// Добавляем выбранный город в историю браузера
-		const newCities = [...selectedCities, city];
-		const state = { cities: newCities };
-		window.history.pushState(state, '', ''); // Пустая строка для URL
-	};
-
 	const handleCityClick = (city: City) => {
-		console.log(city)
 		dispatch(addSelectedCity({ city }));
 	};
 
-	const handlePopstate = (event: PopStateEvent) => {
-		// Вызывается при изменении состояния истории браузера (нажатие кнопок "вперед" или "назад")
-		const state = event.state;
-		if (state && state.cities) {
-			console.log('Popstate event - cities:', state.cities);
-		}
-	};
-	console.log(window.history)
 	return (
 		<SquarWrapper>
 			<p>Resent results</p>
@@ -92,3 +60,5 @@ const ResentResults = () => {
 };
 
 export default ResentResults;
+
+

@@ -5,6 +5,7 @@ import { RootState } from '../app/reducers';
 import { removeFavoriteCity } from '../entities/favorites';
 import { AppDispatch } from '../app/store';
 import DeleteIcon from './DeleteIcon';
+import { addSelectedCity } from '../entities/citysearch';
 
 interface City {
 	name: string;
@@ -25,7 +26,7 @@ const SquareContainer = styled.div`
 `;
 
 const SquarWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   right: 20px;
   bottom: 140px;
   z-index: 99999;
@@ -47,7 +48,7 @@ const Favorites = () => {
 	const favorites = useSelector((state: RootState) => state.favoritescities.favoritescities);
 
 	const handleCityClick = (city: City) => {
-		console.log(city); // Временно выводим выбранный город в консоль
+		dispatch(addSelectedCity({ city }));
 	};
 
 	const handleDeleteClick = (cityName: string) => {
