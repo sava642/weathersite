@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkweathersite=self.webpackChunkweathersite||[]).push([[922],{922:(e,s,r)=>{r.r(s),r.d(s,{default:()=>h});r(43);var t=r(579);const h=()=>(0,t.jsxs)("div",{children:[(0,t.jsx)("h1",{children:"404 - Not Found"}),(0,t.jsx)("p",{children:"Sorry, the page you are looking for does not exist."})]})}}]);
-//# sourceMappingURL=922.9f66afc0.chunk.js.map
