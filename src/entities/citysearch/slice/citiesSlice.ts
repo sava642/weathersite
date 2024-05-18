@@ -1,12 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface LocalNames {
+	[language: string]: string;
+}
+
 interface City {
 	name: string;
 	lat: string;
-	lng: string;
+	lon: string;
 	country: string;
-	admin1: string;
-	admin2: string;
+	state: string;
+	local_names: LocalNames;
 }
 
 interface LocationState {

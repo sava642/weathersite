@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../app/reducers';
@@ -13,7 +12,7 @@ const WeatherForecast: React.FC = () => {
 
 	useEffect(() => {
 		if (currentCity) {
-			dispatch(fetchWeather({ latitude: +currentCity.lat, longitude: +currentCity.lng }));
+			dispatch(fetchWeather({ latitude: +currentCity.lat, longitude: +currentCity.lon }));
 		}
 	}, [currentCity, dispatch]);
 

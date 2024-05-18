@@ -7,13 +7,17 @@ import { AppDispatch } from '../app/store';
 import DeleteIcon from './DeleteIcon';
 import { addSelectedCity } from '../entities/citysearch';
 
+interface LocalNames {
+	[language: string]: string;
+}
+
 interface City {
 	name: string;
 	lat: string;
-	lng: string;
+	lon: string;
 	country: string;
-	admin1: string;
-	admin2: string;
+	state: string;
+	local_names: LocalNames;
 }
 
 const SquareContainer = styled.div`
@@ -28,7 +32,7 @@ const SquareContainer = styled.div`
 const SquarWrapper = styled.div`
   position: fixed;
   right: 20px;
-  bottom: 140px;
+  bottom: 60px;
   z-index: 99999;
   width: 40%;
   height: 20%;

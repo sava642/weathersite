@@ -13,7 +13,6 @@ export const fetchWeather = createAsyncThunk(
 
 		try {
 			const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`);
-			console.log(response.data)
 			return response.data; // Возвращаем полученные данные
 		} catch (error) {
 			throw new Error('Failed to fetch weather data'); // Обработка ошибки при получении данных

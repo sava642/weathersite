@@ -9,6 +9,8 @@ interface WeatherState {
 	pressure: number;
 	windSpeed: number;
 	name: string;
+	lat: string;
+	lon: string;
 }
 
 const initialState: WeatherState = {
@@ -17,6 +19,8 @@ const initialState: WeatherState = {
 	humidity: 0,
 	pressure: 0,
 	windSpeed: 0,
+	lat: "",
+	lon: "",
 	name: "",
 };
 
@@ -31,6 +35,8 @@ const weatherSlice = createSlice({
 			state.humidity = action.payload.main.humidity;
 			state.pressure = action.payload.main.pressure;
 			state.windSpeed = action.payload.wind.speed;
+			state.lat = action.payload.coord.lat;
+			state.lon = action.payload.coord.lon;
 			state.name = action.payload.name;
 
 		});

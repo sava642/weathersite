@@ -1,40 +1,67 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import cities from 'cities.json';
-import { addSelectedCity } from '../../entities/citysearch';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../app/reducers';
+import { addSelectedCity } from '../../entities/citysearch';
+interface LocalNames {
+	[language: string]: string;
+}
 
 interface City {
 	name: string;
 	lat: string;
-	lng: string;
+	lon: string;
 	country: string;
-	admin1: string;
-	admin2: string;
+	state: string;
+	local_names: LocalNames;
 }
-
-const citiesArray: City[] = cities as City[];
 
 const MyCity: React.FC = () => {
 	const dispatch = useDispatch();
-	const { name } = useSelector((state: RootState) => state.weather);
+	const currentCityName = useSelector((state: RootState) => state.weather.name);
+	const currentCityLon = useSelector((state: RootState) => state.weather.lon);
+	const currentCityLat = useSelector((state: RootState) => state.weather.lat);
+	const cities = useSelector((state: RootState) => state.cities.selectedCities);
+	const navigate = useNavigate();
 
 	useEffect(() => {
+		const curCity: City = {
+			name: currentCityName,
+			lat: currentCityLat,
+			lon: currentCityLon,
+			country: '',
+			state: '',
+			local_names: {}
+		};
+
 		const searchCity = () => {
-			const foundCity = citiesArray.find((city: City) => city.name === name);
-			if (foundCity) {
-				console.log(foundCity);
-				dispatch(addSelectedCity({ city: foundCity }));
+			if (cities.length === 0) {
+				dispatch(addSelectedCity({ city: curCity }));
+
+			} else {
+				const foundCity = cities.find((city: City) =>
+					city.name.toLowerCase().normalize() === currentCityName.toLowerCase().normalize() ||
+					Math.round(parseFloat(city.lat) * 100) / 100 === Math.round(parseFloat(currentCityLat) * 100) / 100 && // Округляем до двух цифр после запятой
+					Math.round(parseFloat(city.lon) * 100) / 100 === Math.round(parseFloat(currentCityLon) * 100) / 100
+				);
+				if (!foundCity) {
+					dispatch(addSelectedCity({ city: curCity }));
+
+				}
 			}
 		};
 
-		if (name) {
+		if (currentCityName && currentCityLat && currentCityLon) {
 			searchCity();
+			const path = `/city/${curCity.name}/${curCity.lat}/${curCity.lon}`;
+			navigate(path, { replace: true });
 		}
-	}, [name, dispatch]);
+	}, [currentCityName, currentCityLat, currentCityLon, cities, dispatch]);
 
 	return null;
 };
 
 export default MyCity;
+
+
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import cities from 'cities.json';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addSelectedCity } from '../slice/citiesSlice';
 import { AppDispatch } from '../../../app/store';
 import styled from 'styled-components';
-
+import axios from 'axios';
+import { RootState } from '../../../app/reducers';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SearchContainer = styled.div`
     position: absolute;
@@ -15,7 +16,6 @@ const SearchContainer = styled.div`
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
-		
 	 }
 
 	 li {
@@ -23,68 +23,75 @@ const SearchContainer = styled.div`
 		text-decoration: none;
 		color: #333;
 		transition: color 0.3s ease;
-  cursor:pointer;
+		cursor: pointer;
 		&:hover {
 		  color: #007bff;
 		}
-  
 	 }
 `;
+
+interface LocalNames {
+	[language: string]: string;
+}
 
 interface City {
 	name: string;
 	lat: string;
-	lng: string;
+	lon: string;
 	country: string;
-	admin1: string;
-	admin2: string;
+	state: string;
+	local_names: LocalNames;
 }
-
-const citiesArray: City[] = cities as City[];
 
 const CitySearch: React.FC = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const navigate = useNavigate();
+	const [searchTerm, setSearchTerm] = useState<string>(''); // Устанавливаем начальное значение пустой строки
+	const [suggestions, setSuggestions] = useState<City[]>([]);
 
-	const [searchTerm, setSearchTerm] = useState<string>('');
-	const [suggestions, setSuggestions] = useState<string[]>([]);
-
-	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value;
-		setSearchTerm(value);
-		// Фильтруем города по введенному значению
-		const filteredCities = citiesArray.filter((city: City) =>
-			city.name.toLowerCase().includes(value.toLowerCase())
-		);
-		// Ограничиваем количество отображаемых подсказок
-		const limitedSuggestions = filteredCities.slice(0, 5).map((city) => city.name);
-		setSuggestions(limitedSuggestions);
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === 'Enter') {
+			// Запускаем поиск при нажатии клавиши Enter
+			handleSearchSubmit();
+		}
 	};
 
-	const handleCitySelect = (cityName: string) => {
-		// Отправляем выбранный город в Redux
-		const selectedCity = citiesArray.find((city) => city.name === cityName);
-		if (selectedCity) {
-			// Отправляем выбранный город в Redux
-			dispatch(addSelectedCity({ city: selectedCity }));
-			console.log(`Selected city: ${selectedCity.name}, Latitude: ${selectedCity.lat}, Longitude: ${selectedCity.lng}`);
+	const handleSearchSubmit = () => {
+		if (searchTerm.trim() !== '') {
+			axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`)
+				.then(response => {
+					const data = response.data;
+					setSuggestions(data)
+				})
+				.catch(error => console.error('Error fetching data:', error));
 		}
-		// Очищаем поле поиска и подсказки
+	};
+
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchTerm(event.target.value);
+	};
+
+	const handleCitySelect = (city: City) => {
+		dispatch(addSelectedCity({ city }));
 		setSearchTerm('');
 		setSuggestions([]);
+		//navigate(`/city/${city.name}`);
 	};
 
 	return (
-		<SearchContainer >
+		<SearchContainer>
 			<input
 				type="text"
 				value={searchTerm}
-				onChange={handleSearchChange}
+				onChange={handleInputChange}
+				onKeyDown={handleKeyDown}
 				placeholder="Search for a city"
 			/>
+			<button onClick={handleSearchSubmit}>Search</button>
 			<ul>
 				{suggestions.map((city, index) => (
-					<li key={index} onClick={() => handleCitySelect(city)}>
-						{city}
+					<li onClick={() => handleCitySelect(city)} key={index}>
+						{city.name} {city.state ? `(${city.state})` : null}
 					</li>
 				))}
 			</ul>
@@ -93,4 +100,5 @@ const CitySearch: React.FC = () => {
 };
 
 export default CitySearch;
+
 

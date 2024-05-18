@@ -7,8 +7,8 @@ import styled from 'styled-components';
 const WeatherDetailsContainer = styled.div`
   position: absolute;
   z-index: 9999;
-  top: 50%;
-  right: 30px;
+  top: 20%;
+  right: 10px;
   transform: translateY(-80%);
   ul {
 	list-style-type: none;

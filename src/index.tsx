@@ -13,8 +13,8 @@ if (rootElement) {
 
   root.render(
     <StrictMode>
-      <Provider store={store}>
-        <BrowserRouter basename="/weathersite">
+      <Provider store={store} >
+        <BrowserRouter basename="/weathersite" >
           <App />
         </BrowserRouter>
       </Provider>
@@ -23,7 +23,7 @@ if (rootElement) {
 } else {
   console.error("Root element not found");
 }
-
+//basename="/weathersite"
 
 
 

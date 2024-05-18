@@ -10,6 +10,8 @@ import { addFavoriteCity } from '../../entities/favorites'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/reducers';
 import { AppDispatch } from '../../app/store';
+import CityDetail from '../../shared/CityDetail';
+import { Outlet } from 'react-router-dom';
 
 const Main: React.FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -24,9 +26,11 @@ const Main: React.FC = () => {
 			<MapWithLocation />
 			<CitySearch />
 			<ResentResults />
+
 			<Favorites />
 			<AddIcon onClick={() => handleAddClick()} />
 			<WeatherDetails />
+			<Outlet /> {/* Добавлено для рендеринга вложенных маршрутов */}
 		</div>
 	);
 }
