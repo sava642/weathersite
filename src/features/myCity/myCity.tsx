@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../app/reducers';
 import { addSelectedCity } from '../../entities/citysearch';
+
 interface LocalNames {
 	[language: string]: string;
 }
@@ -37,31 +38,28 @@ const MyCity: React.FC = () => {
 		const searchCity = () => {
 			if (cities.length === 0) {
 				dispatch(addSelectedCity({ city: curCity }));
-
+				const path = `/city/${curCity.name}/${curCity.lat}/${curCity.lon}`;
+				navigate(path, { replace: true });
 			} else {
 				const foundCity = cities.find((city: City) =>
-					city.name.toLowerCase().normalize() === currentCityName.toLowerCase().normalize() ||
-					Math.round(parseFloat(city.lat) * 100) / 100 === Math.round(parseFloat(currentCityLat) * 100) / 100 && // Округляем до двух цифр после запятой
-					Math.round(parseFloat(city.lon) * 100) / 100 === Math.round(parseFloat(currentCityLon) * 100) / 100
+					(city.name.toLowerCase().normalize() === currentCityName.toLowerCase().normalize()) ||
+					(Math.round(parseFloat(city.lat) * 100) / 100 === Math.round(parseFloat(currentCityLat) * 100) / 100 && // Округляем до двух цифр после запятой
+						Math.round(parseFloat(city.lon) * 100) / 100 === Math.round(parseFloat(currentCityLon) * 100) / 100)
 				);
 				if (!foundCity) {
 					dispatch(addSelectedCity({ city: curCity }));
-
+					const path = `/city/${curCity.name}/${curCity.lat}/${curCity.lon}`;
+					navigate(path);
 				}
 			}
 		};
 
 		if (currentCityName && currentCityLat && currentCityLon) {
 			searchCity();
-			const path = `/city/${curCity.name}/${curCity.lat}/${curCity.lon}`;
-			navigate(path, { replace: true });
 		}
-	}, [currentCityName, currentCityLat, currentCityLon, cities, dispatch]);
+	}, [currentCityName, currentCityLat, currentCityLon, cities, dispatch, navigate]);
 
 	return null;
 };
 
 export default MyCity;
-
-
-

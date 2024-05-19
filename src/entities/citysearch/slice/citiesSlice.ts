@@ -30,12 +30,13 @@ const citiesSlice = createSlice({
 		addSelectedCity(state, action: PayloadAction<{ city: City }>) {
 			const { city } = action.payload;
 			state.currentCity = city;
-			const isCityAlreadyAdded = state.selectedCities.some((c: City) => c.name === city.name);
-			if (isCityAlreadyAdded) {
-				return;
-			}
-			// Если город еще не добавлен, добавляем его
+
+			// Удаляем город из списка, если он уже существует
+			state.selectedCities = state.selectedCities.filter((c: City) => c.name !== city.name);
+
+			// Добавляем город в конец списка
 			state.selectedCities.push(city);
+
 			// Если количество городов больше 5, удаляем первый город из массива
 			if (state.selectedCities.length > 5) {
 				state.selectedCities.shift();

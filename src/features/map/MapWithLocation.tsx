@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/reducers';
+import { useDispatch } from 'react-redux';
 import "leaflet/dist/leaflet.css";
 import { Icon } from 'leaflet';
 import { fetchWeather } from '../../entities/forecast/fetchWeather';

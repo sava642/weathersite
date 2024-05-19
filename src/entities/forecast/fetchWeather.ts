@@ -10,7 +10,6 @@ export const fetchWeather = createAsyncThunk(
 	'weather/fetchWeather',
 	async ({ latitude, longitude }: Coordinates) => {
 
-
 		try {
 			const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`);
 			return response.data; // Возвращаем полученные данные

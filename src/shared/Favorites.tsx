@@ -6,6 +6,7 @@ import { removeFavoriteCity } from '../entities/favorites';
 import { AppDispatch } from '../app/store';
 import DeleteIcon from './DeleteIcon';
 import { addSelectedCity } from '../entities/citysearch';
+import { useNavigate } from 'react-router-dom';
 
 interface LocalNames {
 	[language: string]: string;
@@ -49,10 +50,13 @@ const ListItem = styled.div`
 
 const Favorites = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const navigate = useNavigate();
 	const favorites = useSelector((state: RootState) => state.favoritescities.favoritescities);
 
 	const handleCityClick = (city: City) => {
 		dispatch(addSelectedCity({ city }));
+		const path = `/city/${city.name}/${city.lat}/${city.lon}`;
+		navigate(path, { replace: false });
 	};
 
 	const handleDeleteClick = (cityName: string) => {

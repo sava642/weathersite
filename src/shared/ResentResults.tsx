@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/reducers';
@@ -43,20 +43,11 @@ const ResentResults = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const selectedCities = useSelector((state: RootState) => state.cities.selectedCities);
-	const currentCity = useSelector((state: RootState) => state.cities.currentCity);
-
-	// useEffect(() => {
-	// 	// Выполняем навигацию только при монтировании компонента
-	// 	if (currentCity) {
-	// 		const path = `/city/${currentCity.name}/${currentCity.lat}/${currentCity.lon}`;
-	// 		navigate(path, { replace: false });
-	// 	}
-	// }, []);
 
 	const handleCityClick = (city: City) => {
 		dispatch(addSelectedCity({ city }));
-		// const path = `/city/${city.name}/${city.lat}/${city.lon}`;
-		// navigate(path, { replace: false });
+		const path = `/city/${city.name}/${city.lat}/${city.lon}`;
+		navigate(path, { replace: false });
 	};
 
 	return (

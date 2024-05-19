@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addSelectedCity } from '../slice/citiesSlice';
 import { AppDispatch } from '../../../app/store';
 import styled from 'styled-components';
 import axios from 'axios';
-import { RootState } from '../../../app/reducers';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const SearchContainer = styled.div`
     position: absolute;
@@ -42,7 +42,7 @@ interface City {
 	state: string;
 	local_names: LocalNames;
 }
-
+const APIKey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
 const CitySearch: React.FC = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const navigate = useNavigate();
@@ -58,7 +58,7 @@ const CitySearch: React.FC = () => {
 
 	const handleSearchSubmit = () => {
 		if (searchTerm.trim() !== '') {
-			axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`)
+			axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${APIKey}`)
 				.then(response => {
 					const data = response.data;
 					setSuggestions(data)
@@ -75,7 +75,8 @@ const CitySearch: React.FC = () => {
 		dispatch(addSelectedCity({ city }));
 		setSearchTerm('');
 		setSuggestions([]);
-		//navigate(`/city/${city.name}`);
+		const path = `/city/${city.name}/${city.lat}/${city.lon}`;
+		navigate(path, { replace: false });
 	};
 
 	return (
