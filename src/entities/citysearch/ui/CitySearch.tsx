@@ -58,7 +58,7 @@ const CitySearch: React.FC = () => {
 
 	const handleSearchSubmit = () => {
 		if (searchTerm.trim() !== '') {
-			axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${APIKey}`)
+			axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${APIKey}`)
 				.then(response => {
 					const data = response.data;
 					setSuggestions(data)
