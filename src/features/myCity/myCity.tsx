@@ -50,6 +50,7 @@ const MyCity: React.FC = () => {
 					dispatch(addSelectedCity({ city: curCity }));
 					const path = `/city/${curCity.name}/${curCity.lat}/${curCity.lon}`;
 					navigate(path);
+
 				}
 			}
 		};

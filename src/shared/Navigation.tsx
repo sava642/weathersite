@@ -1,6 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { RootState } from '../app/reducers';
 
 const Nav = styled.nav`
 margin: 20px;
@@ -31,11 +33,18 @@ margin: 20px;
 `;
 
 const Navigation: React.FC = () => {
+  let path = null
+  const currentCityName = useSelector((state: RootState) => state.weather.name);
+  const currentCityLon = useSelector((state: RootState) => state.weather.lon);
+  const currentCityLat = useSelector((state: RootState) => state.weather.lat);
+  if (currentCityName && currentCityLon && currentCityLat) {
+    path = `/city/${currentCityName}/${currentCityLat}/${currentCityLon}`;
+  }
   return (
     <Nav>
       <ul>
         <li>
-          <StyledNavLink to="/">Weather today</StyledNavLink>
+          <StyledNavLink to={path ? path : "/"}>Weather today</StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/about">About us</StyledNavLink>
