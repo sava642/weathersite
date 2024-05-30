@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { forecastSelector } from '../../entities/forecast';
 import { Spinner } from '../../shared/Spinner';
@@ -22,9 +22,7 @@ const WeatherDetailsContainer = styled.div`
 `;
 
 const WeatherDetails = () => {
-	const weatherData = useSelector(forecastSelector);
-
-	const { name, temperature, feelsLike, humidity, pressure, windSpeed } = useMemo(() => weatherData, [weatherData]);
+	const { name, temperature, feelsLike, humidity, pressure, windSpeed } = useSelector(forecastSelector);
 
 	const convertToCelsius = (temp: number) => Math.round(temp - 273.15);
 
